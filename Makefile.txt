@@ -1,0 +1,26 @@
+CC = g++
+CFLAGS = -Wall -Wextra -std=c++17
+AR = ar
+ARFLAGS = rcs
+
+# Шляхи
+SRCS = calculator.cpp main.cpp
+OBJS = $(SRCS:.cpp=.o)
+LIB = libcalculator.a
+EXEC = calculator_app
+
+all: $(LIB) $(EXEC)
+
+$(LIB): calculator.o
+	$(AR) $(ARFLAGS) $@ $^
+
+$(EXEC): main.o $(LIB)
+	$(CC) $(CFLAGS) $^ -o $@
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS) $(LIB) $(EXEC)
+
+.PHONY: all clean
